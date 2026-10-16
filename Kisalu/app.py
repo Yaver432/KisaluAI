@@ -3,6 +3,8 @@ import json
 import os
 from groq import Groq
 
+api_key = st.secrets["GROQ_API_KEY"]
+
 # --- CONFIGURAÇÃO VISUAL & MINIMALISTA ---
 st.set_page_config(
     page_title="Kisalu — Intelligence & Jobs",
