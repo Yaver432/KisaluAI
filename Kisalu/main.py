@@ -3,37 +3,39 @@ import json
 import pandas as pd
 from groq import Groq
 
-# Inicializa o cliente Groq (certifica-te que tens a tua chave no .env ou no terminal)
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 def analisar_vaga_com_ia(titulo, empresa, descricao):
     prompt_sistema = """
     És um assistente especialista em Inteligência de Mercado e RH. 
-    Analisa a descrição da vaga fornecida e devolve APENAS um objeto JSON válido (sem blocos de markdown extra se possível, ou JSON puro) com a seguinte estrutura exata:
+    Analisa a descrição da vaga fornecida. O teu objetivo é extrair os dados, mesmo que a descrição seja curta. 
+    Define SEMPRE "e_vaga_valida" como true, a menos que o texto seja spam óbvio ou irrelevante.
+    Devolve obrigatoriamente um objeto JSON puro com a seguinte estrutura:
     {
         "e_vaga_valida": true,
-        "cargo_limpo": "...",
+        "cargo_limpo": "Nome limpo do cargo",
         "requisitos_principais": ["requisito 1", "requisito 2"],
-        "resumo_executivo": "Resumo curto e direto da vaga em 2 frases."
+        "resumo_executivo": "Resumo curto da vaga."
     }
     """
     
     try:
+
         chat_completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": prompt_sistema},
-                {"role": "user", "content": f"Título: {titulo}\nEmpresa: {empresa}\nDescrição: {descricao}"}
-            ],
-            model="openai/gpt-oss-120b",
-            response_format={"type": "json_object"}
-        )
+                    messages=[
+                        {"role": "system", "content": prompt_sistema},
+                        {"role": "user", "content": f"Título: {titulo}\nEmpresa: {empresa}\nDescrição: {descricao}"}
+                    ],
+                    model="openai/gpt-oss-120b", 
+                    response_format={"type": "json_object"}
+                )
         return json.loads(chat_completion.choices[0].message.content)
     except Exception as e:
         print(f"  [!] Erro ao comunicar com a IA: {e}")
         return None
 
 def main():
-    csv_filename = "vagas_it_angola.csv" # Nome do ficheiro gerado pelo teu scraper
+    csv_filename = "vagas_it_angola.csv"
     
     print(f"=== A LER DADOS DE '{csv_filename}' ===")
     
@@ -42,7 +44,7 @@ def main():
         return
 
     df = pd.read_csv(csv_filename)
-    df = df.fillna("") # Limpa nulos
+    df = df.fillna("")
     
     if df.empty:
         print("[!] O ficheiro CSV está vazio.")
@@ -65,6 +67,8 @@ def main():
         
         # Envia para a IA processar e resumir
         analise = analisar_vaga_com_ia(titulo, empresa, descricao)
+
+        print(f"    [DEBUG] Resposta da IA: {analise}")
         
         if analise and analise.get("e_vaga_valida"):
             # Estruturar os dados tratados
@@ -88,19 +92,19 @@ def main():
 
     # Cuspir tudo formatado e separado por empresas no terminal
     for empresa, lista_vagas in vagas_por_empresa.items():
-        print(f"🏢 EMPRESA: {empresa.upper()} ({len(lista_vagas)} vaga(s))")
+        print(f"EMPRESA: {empresa.upper()} ({len(lista_vagas)} vaga(s))")
         print("-" * 50)
         
         for i, vaga in enumerate(lista_vagas, 1):
             print(f"  {i}. Cargo: {vaga['cargo_limpo']}")
-            print(f"     📍 Local: {vaga['localizacao']}")
-            print(f"     📝 Resumo: {vaga['resumo']}")
-            print(f"     🛠️ Requisitos: {', '.join(vaga['requisitos'])}")
-            print(f"     🔗 Link: {vaga['link']}")
+            print(f"     Local: {vaga['localizacao']}")
+            print(f"     Resumo: {vaga['resumo']}")
+            print(f"     Requisitos: {', '.join(vaga['requisitos'])}")
+            print(f"     Link: {vaga['link']}")
             print("")
         print("=" * 50 + "\n")
 
-    # Opcional: Guardar o resultado final estruturado em JSON para os RHs consumirem
+  
     with open("relatorio_rh_final.json", "w", encoding="utf-8") as f:
         json.dump(vagas_por_empresa, f, ensure_ascii=False, indent=4)
         
