@@ -1,1 +1,52 @@
-{}
+{
+    "INCENTEA": [
+        {
+            "titulo_original": "Solutions Developer",
+            "cargo_limpo": "Solutions Developer",
+            "localizacao": "Luanda Province, Angola",
+            "link": "https://www.linkedin.com/jobs/view/4480389427",
+            "requisitos": [],
+            "resumo": "Vaga para Solutions Developer na empresa INCENTEA."
+        }
+    ],
+    "LanceSoft Middle East": [
+        {
+            "titulo_original": "Application Support Engineer - DevOps",
+            "cargo_limpo": "Application Support Engineer - DevOps",
+            "localizacao": "Luanda Province, Angola",
+            "link": "https://www.linkedin.com/jobs/view/4477990667",
+            "requisitos": [],
+            "resumo": "Vaga para Application Support Engineer com foco em DevOps na LanceSoft Middle East."
+        }
+    ],
+    "LanceSoft Africa": [
+        {
+            "titulo_original": "Lead Platform Support Engineer - DevOps",
+            "cargo_limpo": "Lead Platform Support Engineer - DevOps",
+            "localizacao": "Luanda Province, Angola",
+            "link": "https://www.linkedin.com/jobs/view/4477968501",
+            "requisitos": [],
+            "resumo": "Vaga para Lead Platform Support Engineer focado em DevOps na LanceSoft Africa."
+        }
+    ],
+    "International Civil Aviation Organization": [
+        {
+            "titulo_original": "NATIONAL POST: IT Assistant (G5), Luanda, Angola",
+            "cargo_limpo": "IT Assistant",
+            "localizacao": "Luanda, Luanda Province, Angola",
+            "link": "https://www.linkedin.com/jobs/view/4479720200",
+            "requisitos": [],
+            "resumo": "The International Civil Aviation Organization is hiring an IT Assistant (G5) for its Luanda, Angola location."
+        }
+    ],
+    "Africell Angola": [
+        {
+            "titulo_original": "Business Analyst",
+            "cargo_limpo": "Business Analyst",
+            "localizacao": "Luanda, Luanda Province, Angola",
+            "link": "https://www.linkedin.com/jobs/view/4476684334",
+            "requisitos": [],
+            "resumo": "Vaga de Business Analyst na Africell Angola."
+        }
+    ]
+}

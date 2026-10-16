@@ -35,7 +35,7 @@ def analisar_vaga_com_ia(titulo, empresa, descricao):
         return None
 
 def main():
-    csv_filename = "vagas_it_angola.csv"
+    csv_filename = "vagas_brutas_angola.csv"
     
     print(f"=== A LER DADOS DE '{csv_filename}' ===")
     
@@ -55,7 +55,6 @@ def main():
 
     vagas_por_empresa = {}
 
-    # Iterar pelas linhas do CSV
     for index, row in df.iterrows():
         titulo = row.get('title', 'N/A')
         empresa = row.get('company', 'Empresa Desconhecida')
@@ -65,13 +64,13 @@ def main():
 
         print(f"[*] A analisar: [{empresa}] {titulo}...")
         
-        # Envia para a IA processar e resumir
+
         analise = analisar_vaga_com_ia(titulo, empresa, descricao)
 
         print(f"    [DEBUG] Resposta da IA: {analise}")
         
         if analise and analise.get("e_vaga_valida"):
-            # Estruturar os dados tratados
+
             item_vaga = {
                 "titulo_original": titulo,
                 "cargo_limpo": analise.get("cargo_limpo", titulo),
@@ -81,7 +80,7 @@ def main():
                 "resumo": analise.get("resumo_executivo", "")
             }
             
-            # Agrupar por empresa
+
             if empresa not in vagas_por_empresa:
                 vagas_por_empresa[empresa] = []
             vagas_por_empresa[empresa].append(item_vaga)
@@ -90,7 +89,6 @@ def main():
     print("                 RELATÓRIO DE VAGAS POR EMPRESA")
     print("=" * 60 + "\n")
 
-    # Cuspir tudo formatado e separado por empresas no terminal
     for empresa, lista_vagas in vagas_por_empresa.items():
         print(f"EMPRESA: {empresa.upper()} ({len(lista_vagas)} vaga(s))")
         print("-" * 50)
