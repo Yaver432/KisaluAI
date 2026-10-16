@@ -61,21 +61,27 @@ def get_groq_client():
         return None
     return Groq(api_key=GROQ_API_KEY)
 
-# --- CARREGAR DADOS COM CACHE ---
+
 @st.cache_data
 def carregar_dados():
-    json_path = "relatorio_rh_final.json"
+   
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(base_dir, "relatorio_rh_final.json")
+    
     if os.path.exists(json_path):
         try:
             with open(json_path, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except Exception:
+        except Exception as e:
+            st.error(f"Erro ao ler o JSON: {e}")
             return {}
-    return {}
+    else:
+        
+        st.warning(f"Ficheiro não encontrado no caminho: {json_path}")
+        return {}
 
 dados_vagas = carregar_dados()
 
-# --- BARRA LATERAL ---
 st.sidebar.markdown("### **KISALU**")
 st.sidebar.caption("Job Market Intelligence | Angola")
 st.sidebar.markdown("---")
